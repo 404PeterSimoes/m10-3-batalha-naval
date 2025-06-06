@@ -1,8 +1,8 @@
 # Batalha Naval - Pedro Simões
 
 class Barco:
-    def _init_(self, tamanho, orientacao, posicao_inicial, coordenada_ocupadas,
-               esta_afundado):
+    def _init_(self, tamanho: int, orientacao: str, posicao_inicial: str,
+               coordenada_ocupadas: list, esta_afundado: bool):
         self.tamanho = tamanho
         self.orientacao = orientacao
         self.posicao_inicial = posicao_inicial
@@ -18,7 +18,7 @@ class Barco:
 
 # Pode ser o jogador ou o computador
 class Jogador:
-    def __init__(self, nome, o_seu_tabuleiro, lista_barcos):
+    def __init__(self, nome: str, o_seu_tabuleiro, lista_barcos: list):
         self.nome = nome
         self.o_seu_tabuleiro = o_seu_tabuleiro
         self.lista_barcos = lista_barcos
@@ -57,14 +57,32 @@ tabuleiro_jogador = [
 # INÍCIO AQUI
 
 print('\n/\ -- BATALHA NAVAL -- /\\\n')
-nome = input('O meu nome: ')
+nome = input('O meu NOME: ')
 
+print('\n--- Inserir Barcos ---')
 
+print('\nPorta-avião (5 células):\n')
+tamanho = 5
+orientacao = str(input('Introduz a orientação ( H / V ): '))
+posicao_inicial = str(input('Introduz a posição inicial: '))
+coordenadas_ocupadas (vou fazer uma funcao para calcular)
+esta_afundado = False
 
+porta_aviao1 = Barco("colocar aqui as coisas")
+
+cruzador1
+
+contratorped1
+
+contratorped2
+
+submarino1
+
+submarino2
 
 x = [
     [1, 2, 3],
     [4, 5, 6]
 ]
 
-print(x[0][2])
+#print(x[0][2])
