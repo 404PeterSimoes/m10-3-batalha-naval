@@ -65,20 +65,20 @@ print('\nPorta-avião (5 células):\n')
 tamanho = 5
 orientacao = str(input('Introduz a orientação ( H / V ): '))
 posicao_inicial = str(input('Introduz a posição inicial: '))
-coordenadas_ocupadas (vou fazer uma funcao para calcular)
+# coordenadas_ocupadas (vou fazer uma funcao para calcular)
 esta_afundado = False
 
 porta_aviao1 = Barco("colocar aqui as coisas")
 
-cruzador1
+# cruzador1
 
-contratorped1
+# contratorped1
 
-contratorped2
+# contratorped2
 
-submarino1
+# submarino1
 
-submarino2
+# submarino2
 
 x = [
     [1, 2, 3],
