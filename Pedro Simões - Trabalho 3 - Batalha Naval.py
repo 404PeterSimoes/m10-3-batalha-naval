@@ -44,44 +44,77 @@ class Barco:
 
         elif self.tamanho == 4:
 
-            # Verificar se a letra da coordenada está entre A e G
-            if ord(letra_inicial) < 65 or ord(letra_inicial) > 71:
-                return False
+            # Possibilidade ÁREA VERDE
+            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 71:
+                if numero_inicial >= 0 and numero_inicial <= 6:
+                    return True
             
-            # Verificar se o número da coordenada está entre 0 e 6
-            if numero_inicial < 0 or numero_inicial > 6:
-                return False
-            
-            return True
+            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
+            if self.orientacao == 'H':
+
+                if ord(letra_inicial) >= 72 and ord(letra_inicial) <= 74:
+                    if numero_inicial >= 0 and numero_inicial <= 6:
+                        return True
+                
+            # Possibilidade (Área amarela - cima - vertical)
+            if self.orientacao == 'V':
+
+                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 71:
+                    if numero_inicial >= 7 and numero_inicial <= 9:
+                        return True
+                    
+
+            return False
         
 
         elif self.tamanho == 3:
 
-            # Verificar se a letra da coordenada está entre A e H
-            if ord(letra_inicial) < 65 or ord(letra_inicial) > 72:
-                return False
+            # Possibilidade ÁREA VERDE
+            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 72:
+                if numero_inicial >= 0 and numero_inicial <= 7:
+                    return True
             
-            # Verificar se o número da coordenada está entre 0 e 7
-            if numero_inicial < 0 or numero_inicial > 7:
-                return False
-            
-            return True
-        
-        
+            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
+            if self.orientacao == 'H':
 
+                if ord(letra_inicial) == 73 or ord(letra_inicial) == 74:
+                    if numero_inicial >= 0 and numero_inicial <= 7:
+                        return True
+                
+            # Possibilidade (Área amarela - cima - vertical)
+            if self.orientacao == 'V':
+
+                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 72:
+                    if numero_inicial == 8 or numero_inicial == 9:
+                        return True
+                    
+                    
+            return False
+        
+        
         elif self.tamanho == 2:
 
-            # Verificar se a letra da coordenada está entre A e I
-            if ord(letra_inicial) < 65 or ord(letra_inicial) > 73:
-                return False
+            # Possibilidade ÁREA VERDE
+            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 73:
+                if numero_inicial >= 0 and numero_inicial <= 8:
+                    return True
             
-            # Verificar se o número da coordenada está entre 0 e8
-            if numero_inicial < 0 or numero_inicial > 8:
-                return False
-            
-            return True
-        
-        return False
+            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
+            if self.orientacao == 'H':
+
+                if ord(letra_inicial) == 74:
+                    if numero_inicial >= 0 and numero_inicial <= 8:
+                        return True
+                
+            # Possibilidade (Área amarela - cima - vertical)
+            if self.orientacao == 'V':
+
+                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 73:
+                    if numero_inicial == 9:
+                        return True
+                    
+                    
+            return False
         
         
     def calc_CoordenadasOcupadas(self):
@@ -152,6 +185,9 @@ tabuleiro_jogador = [
 """
 
 # INÍCIO AQUI
+# PEDRO UTILIZA CTRL + J POR AMOR DE DEUS
+# ONE DARK PRO
+# MATERIAL ICON THEME
 
 print('\n/\ -- BATALHA NAVAL -- /\\\n')
 nome = input('O meu NOME: ')
@@ -166,6 +202,8 @@ posicao_inicial = str(input('Introduz a posição inicial: '))
 porta_aviao1 = Barco(tamanho, orientacao, posicao_inicial)
 
 print(porta_aviao1.coordenadas_ocupadas)
+
+# CONTINUAR AQUIIIIIIIIIIIIIIIIIIIII
 
 # cruzador1
 
