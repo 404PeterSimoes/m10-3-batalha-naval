@@ -1,27 +1,89 @@
 # Batalha Naval - Pedro Simões
 
 class Barco:
-    def __init__(self, tamanho: int, orientacao: str, posicao_inicial: str, esta_afundado: bool):
+    def __init__(self, tamanho: int, orientacao: str, posicao_inicial: str):
         self.tamanho = tamanho
         self.orientacao = orientacao.upper()
         self.posicao_inicial = posicao_inicial.upper()
-        self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
-        self.esta_afundado = esta_afundado
+
+        if self.verificar_CoordenadasOcupadas():
+            self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
+
+        self.esta_afundado = False
 
     def verificar_CoordenadasOcupadas(self):
         # Verificar se (coordenadas inseridas, tamanho do barco) é compatível com a área de jogo
-        if tamanho == 5:
 
-            if letra_inicial == ''
+        letra_inicial = self.posicao_inicial[0]
+        numero_inicial = int(self.posicao_inicial[1])
 
+        if self.tamanho == 5:
 
+            # Possibilidade ÁREA VERDE
+            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 70:
+                if numero_inicial >= 0 and numero_inicial <= 5:
+                    return True
+            
+            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
+            if self.orientacao == 'H':
 
+                if ord(letra_inicial) >= 71 and ord(letra_inicial) <= 74:
+                    if numero_inicial >= 0 and numero_inicial <= 5:
+                        return True
+                
+            # Possibilidade (Área amarela - cima - vertical)
+            if self.orientacao == 'V':
 
-
-
+                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 70:
+                    if numero_inicial >= 6 and numero_inicial <= 9:
+                        return True
 
             
+            return False
+        
 
+        elif self.tamanho == 4:
+
+            # Verificar se a letra da coordenada está entre A e G
+            if ord(letra_inicial) < 65 or ord(letra_inicial) > 71:
+                return False
+            
+            # Verificar se o número da coordenada está entre 0 e 6
+            if numero_inicial < 0 or numero_inicial > 6:
+                return False
+            
+            return True
+        
+
+        elif self.tamanho == 3:
+
+            # Verificar se a letra da coordenada está entre A e H
+            if ord(letra_inicial) < 65 or ord(letra_inicial) > 72:
+                return False
+            
+            # Verificar se o número da coordenada está entre 0 e 7
+            if numero_inicial < 0 or numero_inicial > 7:
+                return False
+            
+            return True
+        
+        
+
+        elif self.tamanho == 2:
+
+            # Verificar se a letra da coordenada está entre A e I
+            if ord(letra_inicial) < 65 or ord(letra_inicial) > 73:
+                return False
+            
+            # Verificar se o número da coordenada está entre 0 e8
+            if numero_inicial < 0 or numero_inicial > 8:
+                return False
+            
+            return True
+        
+        return False
+        
+        
     def calc_CoordenadasOcupadas(self):
         
         letra_inicial = self.posicao_inicial[0]
@@ -101,7 +163,7 @@ tamanho = 5
 orientacao = str(input('Introduz a orientação ( H / V ): '))
 posicao_inicial = str(input('Introduz a posição inicial: '))
 
-porta_aviao1 = Barco(tamanho, orientacao, posicao_inicial, False)
+porta_aviao1 = Barco(tamanho, orientacao, posicao_inicial)
 
 print(porta_aviao1.coordenadas_ocupadas)
 
