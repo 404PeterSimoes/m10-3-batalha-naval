@@ -1,13 +1,48 @@
 # Batalha Naval - Pedro Simões
 
 class Barco:
-    def _init_(self, tamanho: int, orientacao: str, posicao_inicial: str,
-               coordenada_ocupadas: list, esta_afundado: bool):
+    def __init__(self, tamanho: int, orientacao: str, posicao_inicial: str, esta_afundado: bool):
         self.tamanho = tamanho
-        self.orientacao = orientacao
-        self.posicao_inicial = posicao_inicial
-        self.coordenadas_ocupadas = coordenada_ocupadas
+        self.orientacao = orientacao.upper()
+        self.posicao_inicial = posicao_inicial.upper()
+        self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
         self.esta_afundado = esta_afundado
+
+    def verificar_CoordenadasOcupadas(self):
+        # Verificar se (coordenadas inseridas, tamanho do barco) é compatível com a área de jogo
+        if tamanho == 5:
+
+            if letra_inicial == ''
+
+
+
+
+
+
+
+            
+
+    def calc_CoordenadasOcupadas(self):
+        
+        letra_inicial = self.posicao_inicial[0]
+        numero_inicial = int(self.posicao_inicial[1])
+
+        # Adicionar as coordenadas do barco a uma lista de coordenadas
+        coordenadas = []
+
+        for i in range(self.tamanho):
+            if self.orientacao == 'H':
+
+                novo_numero = numero_inicial + i
+                nova_coord = f'{letra_inicial}{novo_numero}'
+
+            elif self.orientacao == 'V':
+                nova_letra = chr(ord(letra_inicial) + i)
+                nova_coord = f'{nova_letra}{numero_inicial}'
+            
+            coordenadas.append(nova_coord)
+
+        return coordenadas
 
 # class Tabuleiro:
     # def colocar_barco(Barco):
@@ -65,10 +100,10 @@ print('\nPorta-avião (5 células):\n')
 tamanho = 5
 orientacao = str(input('Introduz a orientação ( H / V ): '))
 posicao_inicial = str(input('Introduz a posição inicial: '))
-# coordenadas_ocupadas (vou fazer uma funcao para calcular)
-esta_afundado = False
 
-porta_aviao1 = Barco("colocar aqui as coisas")
+porta_aviao1 = Barco(tamanho, orientacao, posicao_inicial, False)
+
+print(porta_aviao1.coordenadas_ocupadas)
 
 # cruzador1
 
