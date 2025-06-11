@@ -136,12 +136,12 @@ class Barco:
             elif self.orientacao == 'V':
                 nova_letra = chr(ord(letra_inicial) + i)
                 nova_coord = f'{nova_letra}{numero_inicial}'
-            
+        
+
             coordenadas.append(nova_coord)
 
         return coordenadas
 
-    #def verificar_sobreposicao(self):
 
 class Tabuleiro:
     def __init__(self):
@@ -151,12 +151,25 @@ class Tabuleiro:
     def colocar_barco(self, barco: Barco):
         if barco.verificar_Coordenadas_tabuleiro(): # Se caso as coordenadas forem válidas no tabuleiro
 
+            # Verificar sobreposição com barcos existentes
+            for outro_barco in self.barcos:
+
+                for coord in barco.coordenadas_ocupadas:
+                    if coord in outro_barco.coordenadas_ocupadas:
+                        print(f"\nErro: A coordenada {coord} já está ocupada por outro barco.")
+                        return False
+
+            # Se não houver sobreposição, o barco será colocado
             for coord in barco.coordenadas_ocupadas:
                 letra_linha = ord(coord[0]) - 65
                 num_coluna = int(coord[1])
 
                 self.grelha[letra_linha][num_coluna] = 'B'
-                self.barcos.append
+            
+            self.barcos.append(barco)
+            return True
+            
+            
 
     def mostrar_tabuleiro(self):
         print('\n  0 1 2 3 4 5 6 7 8 9')
@@ -198,7 +211,13 @@ def inserir_barcos_jogador():
 
     porta_aviao1 = Barco(5, orientacao, posicao_inicial)
 
-    tabuleiro_jogador.colocar_barco(porta_aviao1)
+    if tabuleiro_jogador.colocar_barco(porta_aviao1):
+        pass
+    else:
+        print('Erro')
+
+        #EXEMPLO
+
     tabuleiro_jogador.mostrar_tabuleiro()
 
     # ---------------------------------------------------
