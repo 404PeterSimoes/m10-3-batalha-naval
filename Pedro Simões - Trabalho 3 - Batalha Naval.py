@@ -6,10 +6,8 @@ class Barco:
         self.orientacao = orientacao.upper()
         self.posicao_inicial = posicao_inicial.upper()
 
-        if self.verificar_Coordenadas_tabuleiro():
-            self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
-
-        
+        #if self.verificar_Coordenadas_tabuleiro():
+        self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
 
         self.esta_afundado = False
 
@@ -156,7 +154,7 @@ class Tabuleiro:
 
                 for coord in barco.coordenadas_ocupadas:
                     if coord in outro_barco.coordenadas_ocupadas:
-                        print(f"\nErro: A coordenada {coord} já está ocupada por outro barco.")
+
                         return False
 
             # Se não houver sobreposição, o barco será colocado
@@ -168,6 +166,9 @@ class Tabuleiro:
             
             self.barcos.append(barco)
             return True
+        
+        else:
+            return False
             
             
 
@@ -204,80 +205,122 @@ def inserir_barcos_jogador():
 
     # ---------------------------------------------------
 
-    print('\nPorta-avião (5 células):\n')
+    verificacao = False
 
-    orientacao = str(input('Introduz a orientação ( H / V ): '))
-    posicao_inicial = str(input('Introduz a posição inicial: '))
+    while not verificacao:
+        print('\nPorta-avião (5 células):\n')
 
-    porta_aviao1 = Barco(5, orientacao, posicao_inicial)
+        orientacao = str(input('Introduz a orientação ( H / V ): '))
+        posicao_inicial = str(input('Introduz a posição inicial: '))
 
-    if tabuleiro_jogador.colocar_barco(porta_aviao1):
-        pass
-    else:
-        print('Erro')
+        porta_aviao1 = Barco(5, orientacao, posicao_inicial)
 
-        #EXEMPLO
+        if tabuleiro_jogador.colocar_barco(porta_aviao1):
+            verificacao = True
+        else:
+            print('\nErro! Esse barco não é válido.\nTenta novamente:')
+            tabuleiro_jogador.mostrar_tabuleiro()
+        
+    tabuleiro_jogador.mostrar_tabuleiro()
+
+    # ---------------------------------------------------
+
+    verificacao = False
+
+    while not verificacao:
+        print('\nCruzador (4 células):\n')
+
+        orientacao = str(input('Introduz a orientação ( H / V ): '))
+        posicao_inicial = str(input('Introduz a posição inicial: '))
+
+        cruzador1 = Barco(4, orientacao, posicao_inicial)
+
+        if tabuleiro_jogador.colocar_barco(cruzador1):
+            verificacao = True
+        else:
+            print('\nErro! Esse barco não é válido.\nTenta novamente:')
+            tabuleiro_jogador.mostrar_tabuleiro()
+        
+    tabuleiro_jogador.mostrar_tabuleiro()
+
+    # ---------------------------------------------------
+
+    verificacao = False
+    
+    while not verificacao:
+        print('\nContratorpedeiro (3 células):\n')
+
+        orientacao = str(input('Introduz a orientação ( H / V ): '))
+        posicao_inicial = str(input('Introduz a posição inicial: '))
+
+        contratorped1 = Barco(3, orientacao, posicao_inicial)
+
+        if tabuleiro_jogador.colocar_barco(contratorped1):
+            verificacao = True
+        else:
+            print('\nErro! Esse barco não é válido.\nTenta novamente:')
+            tabuleiro_jogador.mostrar_tabuleiro()
 
     tabuleiro_jogador.mostrar_tabuleiro()
 
     # ---------------------------------------------------
 
-    print('\nCruzador (4 células):\n')
+    verificacao = False
 
-    orientacao = str(input('Introduz a orientação ( H / V ): '))
-    posicao_inicial = str(input('Introduz a posição inicial: '))
+    while not verificacao:
+        print('\nContratorpedeiro (3 células):\n')
 
-    cruzador1 = Barco(4, orientacao, posicao_inicial)
+        orientacao = str(input('Introduz a orientação ( H / V ): '))
+        posicao_inicial = str(input('Introduz a posição inicial: '))
 
-    tabuleiro_jogador.colocar_barco(cruzador1)
+        contratorped2 = Barco(3, orientacao, posicao_inicial)
+
+        if tabuleiro_jogador.colocar_barco(contratorped2):
+            verificacao = True
+        else:
+            print('\nErro! Esse barco não é válido.\nTenta novamente:')
+            tabuleiro_jogador.mostrar_tabuleiro()
+
     tabuleiro_jogador.mostrar_tabuleiro()
 
     # ---------------------------------------------------
 
-    print('\nContratorpedeiro (3 células):\n')
+    verificacao = False
 
-    orientacao = str(input('Introduz a orientação ( H / V ): '))
-    posicao_inicial = str(input('Introduz a posição inicial: '))
+    while not verificacao:
+        print('\nSubmarino (2 células:)\n')
 
-    contratorped1 = Barco(3, orientacao, posicao_inicial)
+        orientacao = str(input('Introduz a orientação ( H / V ): '))
+        posicao_inicial = str(input('Introduz a posição inicial: '))
 
-    tabuleiro_jogador.colocar_barco(contratorped1)
+        submarino1 = Barco(2, orientacao, posicao_inicial)
+
+        if tabuleiro_jogador.colocar_barco(submarino1):
+            verificacao = True
+        else:
+            print('\nErro! Esse barco não é válido.\nTenta novamente:')
+            tabuleiro_jogador.mostrar_tabuleiro()
+
     tabuleiro_jogador.mostrar_tabuleiro()
 
     # ---------------------------------------------------
 
-    print('\nContratorpedeiro (3 células):\n')
+    verificacao = False
 
-    orientacao = str(input('Introduz a orientação ( H / V ): '))
-    posicao_inicial = str(input('Introduz a posição inicial: '))
+    while not verificacao:
+        print('\nSubmarino (2 células:)\n')
 
-    contratorped2 = Barco(3, orientacao, posicao_inicial)
+        orientacao = str(input('Introduz a orientação ( H / V ): '))
+        posicao_inicial = str(input('Introduz a posição inicial: '))
 
-    tabuleiro_jogador.colocar_barco(contratorped2)
-    tabuleiro_jogador.mostrar_tabuleiro()
+        submarino2 = Barco(2, orientacao, posicao_inicial)
 
-    # ---------------------------------------------------
+        if tabuleiro_jogador.colocar_barco(submarino2):
+            verificacao = True
+        else:
+            print('\nErro! Esse barco não é válido.\nTenta novamente:')
+            tabuleiro_jogador.mostrar_tabuleiro()
 
-    print('\nSubmarino (2 células:)\n')
-
-    orientacao = str(input('Introduz a orientação ( H / V ): '))
-    posicao_inicial = str(input('Introduz a posição inicial: '))
-
-    submarino1 = Barco(2, orientacao, posicao_inicial)
-
-    tabuleiro_jogador.colocar_barco(submarino1)
-    tabuleiro_jogador.mostrar_tabuleiro()
-
-    # ---------------------------------------------------
-
-    print('\nSubmarino (2 células:)\n')
-
-    orientacao = str(input('Introduz a orientação ( H / V ): '))
-    posicao_inicial = str(input('Introduz a posição inicial: '))
-
-    submarino2 = Barco(2, orientacao, posicao_inicial)
-
-    tabuleiro_jogador.colocar_barco(submarino2)
     tabuleiro_jogador.mostrar_tabuleiro()
 
 # --------------
