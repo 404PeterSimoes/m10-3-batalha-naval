@@ -6,16 +6,19 @@ class Barco:
         self.orientacao = orientacao.upper()
         self.posicao_inicial = posicao_inicial.upper()
 
-        if self.verificar_CoordenadasOcupadas():
+        if self.verificar_Coordenadas_tabuleiro():
             self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
+
+        
 
         self.esta_afundado = False
 
-    def verificar_CoordenadasOcupadas(self):
+    def verificar_Coordenadas_tabuleiro(self) -> bool:
         # Verificar se (coordenadas inseridas, tamanho do barco) é compatível com a área de jogo
 
         letra_inicial = self.posicao_inicial[0]
         numero_inicial = int(self.posicao_inicial[1])
+
 
         if self.tamanho == 5:
 
@@ -65,7 +68,7 @@ class Barco:
                     
 
             return False
-        
+    
 
         elif self.tamanho == 3:
 
@@ -115,8 +118,7 @@ class Barco:
                     
                     
             return False
-        
-        
+  
     def calc_CoordenadasOcupadas(self):
         
         letra_inicial = self.posicao_inicial[0]
@@ -139,7 +141,33 @@ class Barco:
 
         return coordenadas
 
-# class Tabuleiro:
+    #def verificar_sobreposicao(self):
+
+class Tabuleiro:
+    def __init__(self):
+        self.grelha = [['~' for _ in range(10)] for _ in range(10)]
+        self.barcos = []
+
+    def colocar_barco(self, barco: Barco):
+        if barco.verificar_Coordenadas_tabuleiro(): # Se caso as coordenadas forem válidas no tabuleiro
+
+            for coord in barco.coordenadas_ocupadas:
+                letra_linha = ord(coord[0]) - 65
+                num_coluna = int(coord[1])
+
+                self.grelha[letra_linha][num_coluna] = 'B'
+                self.barcos.append
+
+    def mostrar_tabuleiro(self):
+        print('  0 1 2 3 4 5 6 7 8 9')
+        
+        for i in range(10):
+            linha_letra = chr(65 + i)
+            linha_valores = ' '.join(self.grelha[i])
+
+            print(f'{linha_letra} {linha_valores}')
+
+
     # def colocar_barco(Barco):
 
     # def receber_tiro(coord):
@@ -185,21 +213,90 @@ tabuleiro_jogador = [
 """
 
 # INÍCIO AQUI
-# PEDRO UTILIZA CTRL + J POR AMOR DE DEUS
-# ONE DARK PRO
-# MATERIAL ICON THEME
+
+tabuleiro_jogador = Tabuleiro()
+tabuleiro_maquina = Tabuleiro()
 
 print('\n/\ -- BATALHA NAVAL -- /\\\n')
 nome = input('O meu NOME: ')
 
+# jogador = Jogador(nome, tabuleiro1, barcos)
+
 print('\n--- Inserir Barcos ---')
 
+# ---------------------------------------------------
+
 print('\nPorta-avião (5 células):\n')
-tamanho = 5
+
 orientacao = str(input('Introduz a orientação ( H / V ): '))
 posicao_inicial = str(input('Introduz a posição inicial: '))
 
-porta_aviao1 = Barco(tamanho, orientacao, posicao_inicial)
+porta_aviao1 = Barco(5, orientacao, posicao_inicial)
+
+tabuleiro_jogador.colocar_barco(porta_aviao1)
+tabuleiro_jogador.mostrar_tabuleiro()
+
+# ---------------------------------------------------
+
+print('\nCruzador (4 células):\n')
+
+orientacao = str(input('Introduz a orientação ( H / V ): '))
+posicao_inicial = str(input('Introduz a posição inicial: '))
+
+cruzador1 = Barco(4, orientacao, posicao_inicial)
+
+tabuleiro_jogador.colocar_barco(cruzador1)
+tabuleiro_jogador.mostrar_tabuleiro()
+
+# ---------------------------------------------------
+
+print('\nContratorpedeiro (3 células):\n')
+
+orientacao = str(input('Introduz a orientação ( H / V ): '))
+posicao_inicial = str(input('Introduz a posição inicial: '))
+
+contratorped1 = Barco(3, orientacao, posicao_inicial)
+
+tabuleiro_jogador.colocar_barco(contratorped1)
+tabuleiro_jogador.mostrar_tabuleiro()
+
+# ---------------------------------------------------
+
+print('\nContratorpedeiro (3 células:\n)')
+
+orientacao = str(input('Introduz a orientação ( H / V ): '))
+posicao_inicial = str(input('Introduz a posição inicial: '))
+
+contratorped2 = Barco(3, orientacao, posicao_inicial)
+
+tabuleiro_jogador.colocar_barco(contratorped2)
+tabuleiro_jogador.mostrar_tabuleiro()
+
+# ---------------------------------------------------
+
+print('\nSubmarino (2 células:\n)')
+
+orientacao = str(input('Introduz a orientação ( H / V ): '))
+posicao_inicial = str(input('Introduz a posição inicial: '))
+
+submarino1 = Barco(2, orientacao, posicao_inicial)
+
+tabuleiro_jogador.colocar_barco(submarino1)
+tabuleiro_jogador.mostrar_tabuleiro()
+
+# ---------------------------------------------------
+
+print('\nSubmarino (2 células:\n)')
+
+orientacao = str(input('Introduz a orientação ( H / V ): '))
+posicao_inicial = str(input('Introduz a posição inicial: '))
+
+submarino2 = Barco(2, orientacao, posicao_inicial)
+
+tabuleiro_jogador.colocar_barco(submarino2)
+tabuleiro_jogador.mostrar_tabuleiro()
+
+
 
 print(porta_aviao1.coordenadas_ocupadas)
 
