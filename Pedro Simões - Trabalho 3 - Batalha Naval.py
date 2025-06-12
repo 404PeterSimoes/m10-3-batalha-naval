@@ -129,6 +129,7 @@ class Barco:
                 nova_coord = f'{letra_inicial}{novo_numero}'
 
             elif self.orientacao == 'V':
+
                 nova_letra = chr(ord(letra_inicial) + i)
                 nova_coord = f'{nova_letra}{numero_inicial}'
         
@@ -212,21 +213,27 @@ class Tabuleiro:
         self.grelha[letra_linha][num_coluna] = 'O'
         return 'falhou'
 
-    def mostrar_tabuleiro(self):
+    def mostrar_tabuleiro(self, visivel = True):
         print('\n  0 1 2 3 4 5 6 7 8 9')
         
-        for i in range(10):
-            linha_letra = chr(65 + i)
-            linha_valores = ' '.join(self.grelha[i])
+        # Letras = primeiríssima coluna (A, B, C, ...)
+        # Linha_valores = (~, B, X, O) 
 
-            print(f'{linha_letra} {linha_valores}')
+        
+        for i in range(10): # Escrever todos os valores eixo vertical - linhas
+            letra = chr(65 + i)
+            linha_valores = []
 
+            for j in range(10): # Escrever todos os valores eixo horizontal - colunas
+                celula = self.grelha[i][j]
 
+                if not visivel and celula == 'B':
+                    linha_valores.append('~')
+                else:
+                    linha_valores.append(celula)
 
-
-
-
-
+            print(f'{letra} {' '.join(linha_valores)}')
+    
 
 # Pode ser o jogador ou o computador
 class Jogador:
