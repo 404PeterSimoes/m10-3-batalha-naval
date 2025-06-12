@@ -279,13 +279,36 @@ class Jogador:
             except:
                 print('\nErro! Coordenada inválida.\nTenta novamente:')
 
+class Computador(Jogador):
+    def __init__(self):
+        super().__init__('Computador')
+        self.posicoes_atacadas = []
 
-def inserir_barcos_jogador():
-    tabuleiro_jogador.mostrar_tabuleiro()
+    def posicionar_barcos_random(self):
+        tipos_barcos = [5, 4, 3, 3, 2, 2]
+
+    # CONTINUAR AQUI
+
+    #fazer método efetuar tiro
+
+def inserir_barcos_jogador(jogador: Jogador):
+    jogador.tabuleiro.mostrar_tabuleiro()
 
     print('\n--- Inserir Barcos ---')
+# https://claude.ai/chat/55340586-d47d-448d-9b2f-54a9411e7ea5
+    tipos_barcos = [
+        (5, 'Porta-avião'),
+        (4, 'Cruzador'),
+        (3, 'Contratorpedeiro'),
+        (3, 'Contratorpedeiro'),
+        (2, 'Submarino'),
+        (2, 'Submarino')
+    ]
+
 
     # ---------------------------------------------------
+
+    # Mudar para forma mais pratica
 
     verificacao = False
 
@@ -409,9 +432,6 @@ def inserir_barcos_jogador():
 # --------------
 # INÍCIO AQUI
 # --------------
-
-tabuleiro_jogador = Tabuleiro()
-tabuleiro_maquina = Tabuleiro()
 
 print('\n🚢 -- BATALHA NAVAL -- 🚢\n')
 nome = input('O meu NOME: ')
