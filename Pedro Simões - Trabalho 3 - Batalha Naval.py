@@ -138,16 +138,16 @@ class Barco:
         return coordenadas
 
     # Verificar se o barco está completamente afundado
-    def esta_afundado(self) -> bool:
+    def verificar_esta_afundado(self) -> bool:
         return len(self.posicoes_atingidas) == self.tamanho
 
-    def receber_tiro(self, coordenada: str) -> bool:
+    def barco_receber_tiro(self, coord: str) -> bool:
 
         # Verificar se a coordenada introduzida estiver a ser ocupada por um barco
-        if coordenada in self.coordenadas_ocupadas:
+        if coord in self.coordenadas_ocupadas:
 
-            # Verificar se a coordenada já foi atingida
-            if coordenada not in self.posicoes_atingidas:
+            # Verificar se a coordenada não foi atingida
+            if coord not in self.posicoes_atingidas:
                 return True
         
         return False
@@ -157,6 +157,7 @@ class Tabuleiro:
     def __init__(self):
         self.grelha = [['~' for _ in range(10)] for _ in range(10)]
         self.barcos = []
+        self.tiros_recebidos = []
 
     def colocar_barco(self, barco: Barco):
         if barco.verificar_Coordenadas_tabuleiro(): # Se caso as coordenadas forem válidas no tabuleiro
@@ -182,6 +183,35 @@ class Tabuleiro:
         else:
             return False
  
+    def tabuleiro_receber_tiro(self, coord: str):
+        # Colocar esta antes de executar a funcao: coord = coord.upper()
+
+        # Verificar se a coordenada recebida já foi atacada
+        if coord in self.tiros_recebidos:
+            return 'ja_atacado' # Pode se colocar no futuro verdadeiro ou falso
+        
+        self.tiros_recebidos.append(coord)
+
+        # Verificar se acertou algum barco
+        for barco in self.barcos:
+            if barco.barco_receber_tiro(coord):
+
+                letra_linha = ord(coord[0]) - 65
+                num_coluna = int(coord[1])
+                self.grelha[letra_linha][num_coluna] = 'X'
+
+                if barco.verificar_esta_afundado():
+                    return 'afundado'
+                else:
+                    return 'acertou'
+                
+        # Se não acertou nenhum barco
+        letra_linha = ord(coord[0]) - 65
+        num_coluna = int(coord[1])
+
+        self.grelha[letra_linha][num_coluna] = 'O'
+        return 'falhou'
+
     def mostrar_tabuleiro(self):
         print('\n  0 1 2 3 4 5 6 7 8 9')
         
@@ -194,7 +224,7 @@ class Tabuleiro:
 
 
 
-    # def receber_tiro(coord):
+
 
 
 
