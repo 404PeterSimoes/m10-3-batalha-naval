@@ -5,11 +5,8 @@ class Barco:
         self.tamanho = tamanho
         self.orientacao = orientacao.upper()
         self.posicao_inicial = posicao_inicial.upper()
-
-        #if self.verificar_Coordenadas_tabuleiro():
         self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
-
-        self.esta_afundado = False
+        self.posicoes_atingidas = []
 
     def verificar_Coordenadas_tabuleiro(self) -> bool:
         # Verificar se (coordenadas inseridas, tamanho do barco) é compatível com a área de jogo
@@ -140,6 +137,21 @@ class Barco:
 
         return coordenadas
 
+    # Verificar se o barco está completamente afundado
+    def esta_afundado(self) -> bool:
+        return len(self.posicoes_atingidas) == self.tamanho
+
+    def receber_tiro(self, coordenada: str) -> bool:
+
+        # Verificar se a coordenada introduzida estiver a ser ocupada por um barco
+        if coordenada in self.coordenadas_ocupadas:
+
+            # Verificar se a coordenada já foi atingida
+            if coordenada not in self.posicoes_atingidas:
+                return True
+        
+        return False
+
 
 class Tabuleiro:
     def __init__(self):
@@ -169,9 +181,7 @@ class Tabuleiro:
         
         else:
             return False
-            
-            
-
+ 
     def mostrar_tabuleiro(self):
         print('\n  0 1 2 3 4 5 6 7 8 9')
         
@@ -195,7 +205,7 @@ class Jogador:
         self.o_seu_tabuleiro = o_seu_tabuleiro
         self.lista_barcos = lista_barcos
 
-    # def efetuar_tiro(): 
+    #def efetuar_tiro(): 
 
 
 def inserir_barcos_jogador():
@@ -322,6 +332,7 @@ def inserir_barcos_jogador():
             tabuleiro_jogador.mostrar_tabuleiro()
 
     tabuleiro_jogador.mostrar_tabuleiro()
+    print('\nTabuleiro introduzido com sucesso!\n')
 
 # --------------
 # INÍCIO AQUI
