@@ -14,7 +14,7 @@ class Barco:
         letra_inicial = self.posicao_inicial[0]
         numero_inicial = int(self.posicao_inicial[1])
 
-
+        
         if self.tamanho == 5:
 
             # Possibilidade ÁREA VERDE
@@ -292,10 +292,9 @@ class Computador(Jogador):
     #fazer método efetuar tiro
 
 def inserir_barcos_jogador(jogador: Jogador):
-    jogador.tabuleiro.mostrar_tabuleiro()
 
     print('\n--- Inserir Barcos ---')
-# https://claude.ai/chat/55340586-d47d-448d-9b2f-54a9411e7ea5
+
     tipos_barcos = [
         (5, 'Porta-avião'),
         (4, 'Cruzador'),
@@ -305,10 +304,33 @@ def inserir_barcos_jogador(jogador: Jogador):
         (2, 'Submarino')
     ]
 
+    
 
-    # ---------------------------------------------------
+    for tamanho, tipo in tipos_barcos:
 
-    # Mudar para forma mais pratica
+        verificacao = False
+
+        while not verificacao:
+            jogador.tabuleiro.mostrar_tabuleiro()
+
+            print(f'\n{tipo} ({tamanho} células):')
+
+            orientacao = str(input('Introduz a orientação (H / V): '))
+            posicao_inicial = str(input('Introduz a posição inicial: '))
+
+            barco = Barco(tamanho, orientacao, posicao_inicial)
+
+
+            if jogador.tabuleiro.colocar_barco(barco):
+                jogador.lista_barcos.append(barco)
+                verificacao = True
+            else:
+                print('Erro! Esse ') #continuar
+
+
+
+
+"""
 
     verificacao = False
 
@@ -428,15 +450,19 @@ def inserir_barcos_jogador(jogador: Jogador):
 
     tabuleiro_jogador.mostrar_tabuleiro()
     print('\nTabuleiro introduzido com sucesso!\n')
+"""
 
 # --------------
 # INÍCIO AQUI
 # --------------
 
+
 print('\n🚢 -- BATALHA NAVAL -- 🚢\n')
 nome = input('O meu NOME: ')
 
-inserir_barcos_jogador()
+jogador = Jogador(nome)
+
+inserir_barcos_jogador(jogador)
 
 # jogador = Jogador(nome, tabuleiro1, barcos)
 
