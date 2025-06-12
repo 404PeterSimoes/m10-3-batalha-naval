@@ -233,16 +233,51 @@ class Tabuleiro:
                     linha_valores.append(celula)
 
             print(f'{letra} {' '.join(linha_valores)}')
-    
 
-# Pode ser o jogador ou o computador
+    # Verificar se todos os barcos estão afundados    
+    def todos_barcos_afundados(self) -> bool:
+
+        for barco in self.barcos:
+            if barco.esta_afundado() == False:
+                return False
+        
+        return True
+
+
 class Jogador:
-    def __init__(self, nome: str, o_seu_tabuleiro, lista_barcos: list):
+    def __init__(self, nome: str):
         self.nome = nome
-        self.o_seu_tabuleiro = o_seu_tabuleiro
-        self.lista_barcos = lista_barcos
+        self.tabuleiro = Tabuleiro()
+        self.lista_barcos = []
 
-    #def efetuar_tiro(): 
+    def efetuar_tiro(self, tabuleiro_adversario: Tabuleiro):
+
+        # Ciclo "infinito"
+        while True:
+            try:
+                coord = input(f'\n{self.nome}, introduz uma coordenada para disparar: ').upper()
+
+                #Validar o formato da coordenada
+                if len(coord) != 2 or ord(coord[0]) < 65 or ord(coord[0]) > 74 or not coord[1].isdigit():
+                    print('\nErro! Coordenada inválida.\nTenta novamente:')
+                    continue
+
+                resultado = tabuleiro_adversario.tabuleiro_receber_tiro(coord)
+
+                if resultado == "ja_atacado":
+                    print("Já atacaste essa posição! Tenta outra.")
+                    continue
+                elif resultado == "acertou":
+                    print("🎯 Acertaste num barco inimigo!")
+                elif resultado == "afundado":
+                    print("💥 Acertaste e afundaste um barco inimigo!")
+                elif resultado == "falhou":
+                    print("Falhaste!")
+
+                return resultado
+
+            except:
+                print('\nErro! Coordenada inválida.\nTenta novamente:')
 
 
 def inserir_barcos_jogador():
@@ -378,7 +413,7 @@ def inserir_barcos_jogador():
 tabuleiro_jogador = Tabuleiro()
 tabuleiro_maquina = Tabuleiro()
 
-print('\n/\ -- BATALHA NAVAL -- /\\\n')
+print('\n🚢 -- BATALHA NAVAL -- 🚢\n')
 nome = input('O meu NOME: ')
 
 inserir_barcos_jogador()
