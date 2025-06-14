@@ -12,8 +12,13 @@ class Barco:
         self.coordenadas_ocupadas = self.calc_CoordenadasOcupadas()
         self.posicoes_atingidas = []
 
+    # Verificar se (coordenadas inseridas, tamanho do barco) é compatível com a área de jogo
     def verificar_Coordenadas_tabuleiro(self) -> bool:
-        # Verificar se (coordenadas inseridas, tamanho do barco) é compatível com a área de jogo
+
+        if (len(self.posicao_inicial) != 2 or ord(self.posicao_inicial[0]) < 65
+            or ord(self.posicao_inicial[0]) > 74 or not self.posicao_inicial[1].isdigit()):
+
+            return False
 
         letra_inicial = ord(self.posicao_inicial[0])
         num_inicial = int(self.posicao_inicial[1])
@@ -169,6 +174,7 @@ class Jogador:
         self.nome = nome
         self.tabuleiro = Tabuleiro()
         self.lista_barcos = []
+        self.pontos = 0
 
     def efetuar_tiro(self, tabuleiro_adversario: Tabuleiro):
 
@@ -195,10 +201,13 @@ class Jogador:
                 coord = input('\n❌ Já atacaste essa posição!\nTenta novamente, introduz uma'
                               ' coordenada para disparar: ')
                 continue
+
             elif resultado == 'acertou':
-                print('\n🎯 Acertaste num barco inimigo!')
+                print('\n🎯 Parabéns, ACERTASTE um barco!\n')
+                
             elif resultado == 'afundado':
-                print('\n💥 Acertaste e afundaste um barco inimigo!')
+                print('\n💥 Parabéns, ACERTASTE e AFUNDASTE um barco!\n')
+
             elif resultado == 'falhou':
                 print('\nFalhaste!')
 
@@ -239,7 +248,7 @@ class Computador(Jogador):
         while True:
             letra_linha = random.randint(0, 9)
             num_coluna = random.randint(0, 9)
-            coord = f'{chr(65 + {letra_linha})}{num_coluna}'
+            coord = f'{chr(65 + letra_linha)}{num_coluna}'
 
             if coord not in self.posicoes_atacadas:
                 self.posicoes_atacadas.append(coord)
@@ -247,14 +256,19 @@ class Computador(Jogador):
                 resultado = tabuleiro_adversario.receber_tiro(coord)
 
                 sleep(1)
-                print(f'O computador disparou em {coord}.')
 
                 if resultado == 'acertou':
-                    print('🎯 O computador acertou num dos teus barcos!')
+                    print(f'O computador disparou em {coord} e\n'
+                           '🎯 ACERTOU um dos teus barcos!\n\n'
+                           'Ele tem direito a mais uma jogada.\n')
+
                 elif resultado == "afundado":
-                    print('💥 O computador acertou e afundou um dos teus barcos!')
+                    print(f'O computador disparou em {coord} e\n'
+                          '💥 ACERTOU e AFUNDOU um dos teus barcos!\n\n'
+                          'Ele tem direito a mais uma jogada.\n')
+                    
                 elif resultado == 'falhou':
-                    print('O computador falhou!')
+                    print(f'O computador disparou em {coord} e\nFALHOU!\n')
 
                 return resultado
                 
@@ -293,11 +307,11 @@ def inserir_barcos_jogador(jogador: Jogador):
                     verificacao = True
                     limpar_terminal()
                 else:
-                    print('\nBarco inválido, tenta novamente.\n')
+                    print('\nBarco inválido, tenta novamente.')
                     os.system('pause')
                     limpar_terminal()
             except:
-                print('\nBarco inválido, tenta novamente.\n')
+                print('\nBarco inválido, tenta novamente.')
                 os.system('pause')
                 limpar_terminal()
     
@@ -337,13 +351,16 @@ computador.posicionar_barcos_random()
 sleep(3)
 print('\n✅ O computador está pronto!')
 sleep(2)
-limpar_terminal()
 
 turno_jogador = True
 
 while True:
     if turno_jogador:
+        limpar_terminal()
+
         print(f'--- Turno de {nome} ---')
+        sleep(1)
+        print(f'--- Pontos: {jogador.pontos}\n')
         sleep(2)
 
         print('O teu tabuleiro:')
@@ -352,6 +369,44 @@ while True:
         print('\n')
 
         print('Tabuleiro do adversário:')
-        computador.tabuleiro.mostrar_tabuleiro(visivel=True)
+        computador.tabuleiro.mostrar_tabuleiro(visivel=False)
 
-        jogador.efetuar_tiro(computador.tabuleiro)
+
+        resultado = jogador.efetuar_tiro(computador.tabuleiro)
+
+        if resultado == 'acertou' or resultado == 'afundado':
+            jogador.pontos += 1
+        
+        turno_jogador = False
+
+
+        if computador.tabuleiro.todos_barcos_afundados():
+            limpar_terminal()
+            print(f'🎉 VITÓRIA! {nome} ganhou, parabéns! :D')
+            break
+
+    else:
+        limpar_terminal()
+
+        print('--- Turno do Computador ---')
+        sleep(1)
+        print(f'--- Pontos: {computador.pontos}\n')
+        sleep(2)
+        
+
+        resultado = computador.efetuar_tiro(jogador.tabuleiro)
+
+        if resultado == 'acertou' or resultado == 'afundado':
+            turno_jogador = False
+            computador.pontos += 1
+
+        else:
+            turno_jogador = True
+        
+
+        if jogador.tabuleiro.todos_barcos_afundados():
+            limpar_terminal()
+            print('💀 DERROTA! O computador ganhou! É assim a vida :v')
+            break
+
+    os.system('pause')
