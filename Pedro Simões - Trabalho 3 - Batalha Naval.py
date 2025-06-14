@@ -1,6 +1,6 @@
 # Batalha Naval - Pedro Simões
 
-from os import system
+import os
 import random
 from time import sleep
 
@@ -62,14 +62,16 @@ class Barco:
     def verificar_esta_afundado(self) -> bool:
         return len(self.posicoes_atingidas) == self.tamanho
 
-    def barco_receber_tiro(self, coord: str) -> bool:
+    def receber_tiro(self, coord: str) -> bool:
 
         # Verificar se a coordenada introduzida estiver a ser ocupada por um barco
         if coord in self.coordenadas_ocupadas:
 
             # Verificar se a coordenada não foi atingida
             if coord not in self.posicoes_atingidas:
-                return True
+                self.posicoes_atingidas.append(coord)
+            
+            return True
         
         return False
 
@@ -104,7 +106,7 @@ class Tabuleiro:
         else:
             return False
  
-    def tabuleiro_receber_tiro(self, coord: str):
+    def receber_tiro(self, coord: str):
 
         # Verificar se a coordenada recebida já foi atacada
         if coord in self.tiros_recebidos:
@@ -114,7 +116,7 @@ class Tabuleiro:
 
         # Verificar se acertou algum barco
         for barco in self.barcos:
-            if barco.barco_receber_tiro(coord):
+            if barco.receber_tiro(coord):
 
                 letra_linha = ord(coord[0]) - 65
                 num_coluna = int(coord[1])
@@ -138,18 +140,17 @@ class Tabuleiro:
         # Letras = primeiríssima coluna (A, B, C, ...)
         # Linha_valores = (~, B, X, O) 
 
-        
         for i in range(10): # Escrever todos os valores eixo vertical - linhas
             letra = chr(65 + i)
             linha_valores = []
 
             for j in range(10): # Escrever todos os valores eixo horizontal - colunas
-                celula = self.grelha[i][j]
+                atual = self.grelha[i][j]
 
-                if not visivel and celula == 'B':
+                if not visivel and atual == 'B':
                     linha_valores.append('~')
                 else:
-                    linha_valores.append(celula)
+                    linha_valores.append(atual)
 
             print(f'{letra} {' '.join(linha_valores)}')
 
@@ -157,7 +158,7 @@ class Tabuleiro:
     def todos_barcos_afundados(self) -> bool:
 
         for barco in self.barcos:
-            if barco.esta_afundado() == False:
+            if barco.verificar_esta_afundado() == False:
                 return False
         
         return True
@@ -171,35 +172,37 @@ class Jogador:
 
     def efetuar_tiro(self, tabuleiro_adversario: Tabuleiro):
 
+        escrever_entrada = True
+
         # Ciclo "infinito"
         while True:
-            try:
+
+            if escrever_entrada == True:
                 coord = input(f'\n{self.nome}, introduz uma coordenada para disparar: ').upper()
 
-                #Validar o formato da coordenada
-                if len(coord) != 2 or ord(coord[0]) < 65 or ord(coord[0]) > 74 or not coord[1].isdigit():
-                    print('\nErro! Coordenada inválida.\nTenta novamente:')
-                    system('pause')
-                    continue
+            #Validar o formato da coordenada
+            if len(coord) != 2 or ord(coord[0]) < 65 or ord(coord[0]) > 74 or not coord[1].isdigit():
+                escrever_entrada = False
+                coord = input('\nCoordenada inválida.\nTenta novamente, introduz uma coordenada'
+                                ' para disparar: ').upper()
+                continue
 
-                sleep(1)
-                resultado = tabuleiro_adversario.tabuleiro_receber_tiro(coord)
+            sleep(1)
+            resultado = tabuleiro_adversario.receber_tiro(coord)
 
-                if resultado == "ja_atacado":
-                    print("Já atacaste essa posição! Tenta outra.")
-                    continue
-                elif resultado == "acertou":
-                    print("🎯 Acertaste num barco inimigo!")
-                elif resultado == "afundado":
-                    print("💥 Acertaste e afundaste um barco inimigo!")
-                elif resultado == "falhou":
-                    print("Falhaste!")
+            if resultado == 'ja_atacado':
+                escrever_entrada = False
+                coord = input('\n❌ Já atacaste essa posição!\nTenta novamente, introduz uma'
+                              ' coordenada para disparar: ')
+                continue
+            elif resultado == 'acertou':
+                print('\n🎯 Acertaste num barco inimigo!')
+            elif resultado == 'afundado':
+                print('\n💥 Acertaste e afundaste um barco inimigo!')
+            elif resultado == 'falhou':
+                print('\nFalhaste!')
 
-                return resultado
-
-            except:
-                print('\nErro! Coordenada inválida.\nTenta novamente:')
-                system('pause')
+            return resultado
 
 class Computador(Jogador):
     def __init__(self):
@@ -213,7 +216,7 @@ class Computador(Jogador):
             colocado = False
 
             while not colocado:
-                orientacao = random.choice('H', 'V')
+                orientacao = random.choice(['H', 'V'])
 
                 if orientacao == 'H':
                     letra_linha = random.randint(0, 9)
@@ -241,7 +244,7 @@ class Computador(Jogador):
             if coord not in self.posicoes_atacadas:
                 self.posicoes_atacadas.append(coord)
 
-                resultado = tabuleiro_adversario.tabuleiro_receber_tiro(coord)
+                resultado = tabuleiro_adversario.receber_tiro(coord)
 
                 sleep(1)
                 print(f'O computador disparou em {coord}.')
@@ -272,7 +275,7 @@ def inserir_barcos_jogador(jogador: Jogador):
     for tamanho, tipo in tipos_barcos:
 
         verificacao = False
-
+        
         while not verificacao:
             jogador.tabuleiro.mostrar_tabuleiro()
 
@@ -288,30 +291,67 @@ def inserir_barcos_jogador(jogador: Jogador):
                 if jogador.tabuleiro.colocar_barco(barco):
                     jogador.lista_barcos.append(barco)
                     verificacao = True
+                    limpar_terminal()
                 else:
-                    print('\nErro! Barco inválido\nTenta novamente:\n')
-                    system('pause')
+                    print('\nBarco inválido, tenta novamente.\n')
+                    os.system('pause')
+                    limpar_terminal()
             except:
-                print('\nErro! Barco inválido\nTenta novamente:\n')
-                system('pause')
+                print('\nBarco inválido, tenta novamente.\n')
+                os.system('pause')
+                limpar_terminal()
     
-    print('\nTabuleiro introduzido com sucesso!\n')
+    print('\n✅ Tabuleiro introduzido com sucesso!\n')
+    sleep(2)
+    limpar_terminal()
 
 
+def limpar_terminal():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 # --------------
 # INÍCIO AQUI
 # --------------
 
+limpar_terminal()
 
 print('\n🚢 -- BATALHA NAVAL -- 🚢\n')
 nome = input('O meu NOME: ')
 
+nome = nome.upper()
+
 jogador = Jogador(nome)
 computador = Computador()
 
-print(f'\n\n\n\nBem-Vindo, {nome.upper()}! :D')
+limpar_terminal()
+
+print(f'Bem-Vindo, {nome}! :D')
+sleep(2)
 inserir_barcos_jogador(jogador)
 
-# jogador = Jogador(nome, tabuleiro1, barcos)
+print('O computador está a posicionar os seus barcos...')
+computador.posicionar_barcos_random()
+sleep(3)
+print('\n✅ O computador está pronto!')
+sleep(2)
+limpar_terminal()
 
+turno_jogador = True
+
+while True:
+    if turno_jogador:
+        print(f'--- Turno de {nome} ---')
+        sleep(2)
+
+        print('O teu tabuleiro:')
+        jogador.tabuleiro.mostrar_tabuleiro(visivel=True)
+
+        print('\n')
+
+        print('Tabuleiro do adversário:')
+        computador.tabuleiro.mostrar_tabuleiro(visivel=True)
+
+        jogador.efetuar_tiro(computador.tabuleiro)
