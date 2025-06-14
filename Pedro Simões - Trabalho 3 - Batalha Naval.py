@@ -1,5 +1,7 @@
 # Batalha Naval - Pedro Simões
 
+from os import system
+
 class Barco:
     def __init__(self, tamanho: int, orientacao: str, posicao_inicial: str):
         self.tamanho = tamanho
@@ -318,14 +320,19 @@ def inserir_barcos_jogador(jogador: Jogador):
             orientacao = str(input('Introduz a orientação (H / V): '))
             posicao_inicial = str(input('Introduz a posição inicial: '))
 
-            barco = Barco(tamanho, orientacao, posicao_inicial)
+            try:
+                barco = Barco(tamanho, orientacao, posicao_inicial)
 
 
-            if jogador.tabuleiro.colocar_barco(barco):
-                jogador.lista_barcos.append(barco)
-                verificacao = True
-            else:
-                print('Erro! Esse ') #continuar
+                if jogador.tabuleiro.colocar_barco(barco):
+                    jogador.lista_barcos.append(barco)
+                    verificacao = True
+                else:
+                    print('\nErro! Barco inválido\nTenta novamente:\n')
+                    system('pause')
+            except:
+                print('\nErro! Barco inválido\nTenta novamente:\n')
+                system('pause')
 
 
 
