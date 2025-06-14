@@ -2,6 +2,7 @@
 
 from os import system
 import random
+from time import sleep
 
 class Barco:
     def __init__(self, tamanho: int, orientacao: str, posicao_inicial: str):
@@ -14,108 +15,24 @@ class Barco:
     def verificar_Coordenadas_tabuleiro(self) -> bool:
         # Verificar se (coordenadas inseridas, tamanho do barco) é compatível com a área de jogo
 
-        letra_inicial = self.posicao_inicial[0]
-        numero_inicial = int(self.posicao_inicial[1])
+        letra_inicial = ord(self.posicao_inicial[0])
+        num_inicial = int(self.posicao_inicial[1])
 
-        
-        if self.tamanho == 5:
+        if self.orientacao == 'H':
 
-            # Possibilidade ÁREA VERDE
-            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 70:
-                if numero_inicial >= 0 and numero_inicial <= 5:
+            if letra_inicial >= 65 and letra_inicial <= 74:
+                if num_inicial >= 0 and num_inicial <= 10 - (self.tamanho):
                     return True
-            
-            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
-            if self.orientacao == 'H':
-
-                if ord(letra_inicial) >= 71 and ord(letra_inicial) <= 74:
-                    if numero_inicial >= 0 and numero_inicial <= 5:
-                        return True
-                
-            # Possibilidade (Área amarela - cima - vertical)
-            if self.orientacao == 'V':
-
-                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 70:
-                    if numero_inicial >= 6 and numero_inicial <= 9:
-                        return True
-
-            
-            return False
-        
-
-        elif self.tamanho == 4:
-
-            # Possibilidade ÁREA VERDE
-            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 71:
-                if numero_inicial >= 0 and numero_inicial <= 6:
-                    return True
-            
-            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
-            if self.orientacao == 'H':
-
-                if ord(letra_inicial) >= 72 and ord(letra_inicial) <= 74:
-                    if numero_inicial >= 0 and numero_inicial <= 6:
-                        return True
-                
-            # Possibilidade (Área amarela - cima - vertical)
-            if self.orientacao == 'V':
-
-                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 71:
-                    if numero_inicial >= 7 and numero_inicial <= 9:
-                        return True
-                    
-
-            return False
-    
-
-        elif self.tamanho == 3:
-
-            # Possibilidade ÁREA VERDE
-            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 72:
-                if numero_inicial >= 0 and numero_inicial <= 7:
-                    return True
-            
-            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
-            if self.orientacao == 'H':
-
-                if ord(letra_inicial) == 73 or ord(letra_inicial) == 74:
-                    if numero_inicial >= 0 and numero_inicial <= 7:
-                        return True
-                
-            # Possibilidade (Área amarela - cima - vertical)
-            if self.orientacao == 'V':
-
-                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 72:
-                    if numero_inicial == 8 or numero_inicial == 9:
-                        return True
-                    
                     
             return False
-        
-        
-        elif self.tamanho == 2:
 
-            # Possibilidade ÁREA VERDE
-            if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 73:
-                if numero_inicial >= 0 and numero_inicial <= 8:
+        if self.orientacao == 'V':
+
+            if letra_inicial >= 65 and (letra_inicial - 65) <= (10 - self.tamanho):
+                if num_inicial >= 0 and num_inicial <= 9:
                     return True
             
-            # Possibilidade (ÁREA AMARELA - baixo - horizontal)
-            if self.orientacao == 'H':
-
-                if ord(letra_inicial) == 74:
-                    if numero_inicial >= 0 and numero_inicial <= 8:
-                        return True
-                
-            # Possibilidade (Área amarela - cima - vertical)
-            if self.orientacao == 'V':
-
-                if ord(letra_inicial) >= 65 and ord(letra_inicial) <= 73:
-                    if numero_inicial == 9:
-                        return True
-                    
-                    
-            return False
+            return False   
   
     def calc_CoordenadasOcupadas(self):
         
@@ -166,7 +83,7 @@ class Tabuleiro:
     def colocar_barco(self, barco: Barco):
         if barco.verificar_Coordenadas_tabuleiro(): # Se caso as coordenadas forem válidas no tabuleiro
 
-            # Verificar sobreposição com barcos existentes
+        # Verificar sobreposição com barcos existentes
             for outro_barco in self.barcos:
 
                 for coord in barco.coordenadas_ocupadas:
@@ -188,7 +105,6 @@ class Tabuleiro:
             return False
  
     def tabuleiro_receber_tiro(self, coord: str):
-        # Colocar esta antes de executar a funcao: coord = coord.upper()
 
         # Verificar se a coordenada recebida já foi atacada
         if coord in self.tiros_recebidos:
@@ -263,8 +179,10 @@ class Jogador:
                 #Validar o formato da coordenada
                 if len(coord) != 2 or ord(coord[0]) < 65 or ord(coord[0]) > 74 or not coord[1].isdigit():
                     print('\nErro! Coordenada inválida.\nTenta novamente:')
+                    system('pause')
                     continue
 
+                sleep(1)
                 resultado = tabuleiro_adversario.tabuleiro_receber_tiro(coord)
 
                 if resultado == "ja_atacado":
@@ -297,7 +215,6 @@ class Computador(Jogador):
             while not colocado:
                 orientacao = random.choice('H', 'V')
 
-                # Outra forma de verificação da posição da peça no tabuleiro
                 if orientacao == 'H':
                     letra_linha = random.randint(0, 9)
                     num_coluna = random.randint(0, 10 - tamanho)
@@ -312,13 +229,36 @@ class Computador(Jogador):
                 if self.tabuleiro.colocar_barco(barco):
                     self.lista_barcos.append(barco)
                     colocado = True
-    
 
-    #fazer método efetuar tiro
+    # Método para o computador efetuar um tiro (aleatório)
+    def efetuar_tiro(self, tabuleiro_adversario: Tabuleiro):
+        
+        while True:
+            letra_linha = random.randint(0, 9)
+            num_coluna = random.randint(0, 9)
+            coord = f'{chr(65 + {letra_linha})}{num_coluna}'
+
+            if coord not in self.posicoes_atacadas:
+                self.posicoes_atacadas.append(coord)
+
+                resultado = tabuleiro_adversario.tabuleiro_receber_tiro(coord)
+
+                sleep(1)
+                print(f'O computador disparou em {coord}.')
+
+                if resultado == 'acertou':
+                    print('🎯 O computador acertou num dos teus barcos!')
+                elif resultado == "afundado":
+                    print('💥 O computador acertou e afundou um dos teus barcos!')
+                elif resultado == 'falhou':
+                    print('O computador falhou!')
+
+                return resultado
+                
 
 def inserir_barcos_jogador(jogador: Jogador):
 
-    print('\n--- Inserir Barcos ---')
+    print('\nIntroduz os barcos no teu TABULEIRO:')
 
     tipos_barcos = [
         (5, 'Porta-avião'),
@@ -328,8 +268,6 @@ def inserir_barcos_jogador(jogador: Jogador):
         (2, 'Submarino'),
         (2, 'Submarino')
     ]
-
-    
 
     for tamanho, tipo in tipos_barcos:
 
@@ -356,6 +294,8 @@ def inserir_barcos_jogador(jogador: Jogador):
             except:
                 print('\nErro! Barco inválido\nTenta novamente:\n')
                 system('pause')
+    
+    print('\nTabuleiro introduzido com sucesso!\n')
 
 
 
@@ -368,7 +308,9 @@ print('\n🚢 -- BATALHA NAVAL -- 🚢\n')
 nome = input('O meu NOME: ')
 
 jogador = Jogador(nome)
+computador = Computador()
 
+print(f'\n\n\n\nBem-Vindo, {nome.upper()}! :D')
 inserir_barcos_jogador(jogador)
 
 # jogador = Jogador(nome, tabuleiro1, barcos)
