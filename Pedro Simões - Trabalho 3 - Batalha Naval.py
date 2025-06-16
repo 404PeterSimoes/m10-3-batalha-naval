@@ -38,7 +38,9 @@ class Barco:
                     return True
             
             return False   
-  
+
+    # Calcular, de acordo com a posição inicial e o tamanho do barco, todas as coordenadas que o
+    # barco ocupará
     def calc_CoordenadasOcupadas(self):
         
         letra_inicial = self.posicao_inicial[0]
@@ -67,6 +69,8 @@ class Barco:
     def verificar_esta_afundado(self) -> bool:
         return len(self.posicoes_atingidas) == self.tamanho
 
+    # Verificar se a coordenada ainda não foi atingida, caso verdade, atingir a coordenada
+    # introduzida
     def receber_tiro(self, coord: str) -> bool:
 
         # Verificar se a coordenada introduzida estiver a ser ocupada por um barco
@@ -87,6 +91,8 @@ class Tabuleiro:
         self.barcos = []
         self.tiros_recebidos = []
 
+    # Colocar barco no tabuleiro, colocando 'B' na sua posição da grelha e
+    # adicionando na lista "barcos"
     def colocar_barco(self, barco: Barco):
         if barco.verificar_Coordenadas_tabuleiro(): # Se caso as coordenadas forem válidas no tabuleiro
 
@@ -111,6 +117,8 @@ class Tabuleiro:
         else:
             return False
  
+    # Verificar se a coordenada não foi atingida, caso verdade, marcar a grelha com 'X' ou 'O'
+    # e returnar a string com o resultado do ataque
     def receber_tiro(self, coord: str):
 
         # Verificar se a coordenada recebida já foi atacada
@@ -139,6 +147,7 @@ class Tabuleiro:
         self.grelha[letra_linha][num_coluna] = 'O'
         return 'falhou'
 
+    # Imprimir o tabuleiro
     def mostrar_tabuleiro(self, visivel = True):
         print('\n  0 1 2 3 4 5 6 7 8 9')
         
@@ -176,6 +185,7 @@ class Jogador:
         self.lista_barcos = []
         self.pontos = 0
 
+    # Realizar um ataque ao tabuleiro adversário (computador)
     def efetuar_tiro(self, tabuleiro_adversario: Tabuleiro):
 
         escrever_entrada = True
@@ -218,6 +228,8 @@ class Computador(Jogador):
         super().__init__('Computador')
         self.posicoes_atacadas = []
 
+    # Posicionar os barcos no tabuleiro do computador aleatóriamente,
+    # de forma a que não se sobreponham
     def posicionar_barcos_random(self):
         tipos_barcos = [5, 4, 3, 3, 2, 2]
 
@@ -273,6 +285,7 @@ class Computador(Jogador):
                 return resultado
                 
 
+# Função para o utilizador introduzir os barcos no seu tabuleiro
 def inserir_barcos_jogador(jogador: Jogador):
 
     print('\nIntroduz os barcos no teu TABULEIRO:')
@@ -410,3 +423,5 @@ while True:
             break
 
     os.system('pause')
+
+os.system('pause')
